@@ -1,0 +1,68 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "testatlasvision"
+dynamic = ["version"]   # single source of truth: testatlasvision.__version__
+description = "Python SDK for AtlasVision: multilingual (English, Igbo, Yoruba, Hausa) visual question answering on N-ATLaS + SigLIP2."
+readme = "README.md"
+requires-python = ">=3.10"
+keywords = ["vqa", "multilingual", "igbo", "yoruba", "hausa", "vision-language"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Typing :: Typed",
+]
+# TODO before publishing: uncomment and fill in
+# authors = [{ name = "Your Name", email = "you@example.com" }]
+# license = "MIT"   # only once the team decides; if you add it, change setuptools>=68 to >=77 above
+dependencies = [
+    "torch",
+    "transformers>=4.56",
+    "peft",
+    "accelerate",
+    "safetensors",
+    "huggingface_hub",
+    "pillow",
+]
+
+[project.optional-dependencies]
+# Needed on GPUs with < 20 GB (e.g. Colab T4), where the LLM loads in 4-bit.
+4bit = ["bitsandbytes"]
+dev = ["pytest", "ruff", "build", "twine"]
+
+[project.urls]
+Homepage = "https://github.com/testatlassdk"
+Source = "https://github.com/testatlassdk"
+Issues = "https://github.com/testatlassdk/issues"
+Changelog = "https://github.com/testatlassdk/blob/main/CHANGELOG.md"
+
+[tool.setuptools.dynamic]
+version = { attr = "testatlasvision.__version__" }
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+testatlasvision = ["py.typed"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 120
+target-version = "py310"
+src = ["src", "tests"]
+extend-exclude = ["notebooks"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B"]
+ignore = ["E501"]   # long user-facing error messages
